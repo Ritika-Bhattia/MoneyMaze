@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work and Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .options {
+            margin-top: 10px;
+        }
+        .option {
+            display: block;
+            padding: 10px;
+            margin: 5px;
+            background-color: #ffcc80;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #ffb74d;
+        }
+        #nextQuiz {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #nextQuiz:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Work and Payment</h1>
+        <p>🔹 Some people get paid daily, some weekly, and some monthly.</p>
+        <p><b>Salary:</b> Fixed amount paid every month (e.g., teachers, doctors).</p>
+        <p><b>Wages:</b> Money paid per hour or per task (e.g., delivery driver, waiter).</p>
+        <h2>Activity: Choose the Correct Payment Type</h2>
+        <div id="quiz"></div>
+        <p id="result"></p>
+        <button id="nextQuiz" onclick="nextQuiz()"><a href="2.3.html">Next Quiz</a></button>
+    </div>
+    <script>
+        const quizData = [
+            { question: "👨‍⚕️ Doctor", correct: "Salary" },
+            { question: "🍽️ Waiter", correct: "Wages" },
+            { question: "🚖 Taxi Driver", correct: "Wages" },
+            { question: "👮‍♂️ Police Officer", correct: "Salary" }
+        ];
+        
+        const quizContainer = document.getElementById("quiz");
+        const resultContainer = document.getElementById("result");
+        const nextQuizButton = document.getElementById("nextQuiz");
+        let correctAnswers = 0;
+        
+        quizData.forEach((item, index) => {
+            let questionDiv = document.createElement("div");
+            questionDiv.className = "question";
+            questionDiv.innerHTML = `<p>${item.question}</p>`;
+            
+            let optionsDiv = document.createElement("div");
+            optionsDiv.className = "options";
+            
+            ["Salary", "Wages"].forEach(option => {
+                let button = document.createElement("div");
+                button.className = "option";
+                button.innerText = option;
+                button.onclick = function () {
+                    if (option === item.correct) {
+                        resultContainer.innerText = "✅ Correct!";
+                        button.style.backgroundColor = "#28a745";
+                        button.style.color = "white";
+                        button.style.pointerEvents = "none";
+                        correctAnswers++;
+                        
+                        if (correctAnswers === quizData.length) {
+                            resultContainer.innerText = "🎉 Congratulations! You've completed this quiz!";
+                            nextQuizButton.style.display = "block";
+                        }
+                    } else {
+                        resultContainer.innerText = "❌ Try Again!";
+                    }
+                };
+                optionsDiv.appendChild(button);
+            });
+            
+            quizContainer.appendChild(questionDiv);
+            quizContainer.appendChild(optionsDiv);
+        });
+        
+        function nextQuiz() {
+            alert("Redirecting to the next quiz...");
+            // Replace with actual redirection to the next quiz
+        }
+    </script>
+</body>
+</html>

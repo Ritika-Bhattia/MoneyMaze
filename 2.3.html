@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Needs vs. Wants Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px;
+            background-color: #ffcc80;
+            border-radius: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .need-btn { background-color: #4caf50; color: white; }
+        .want-btn { background-color: #f44336; color: white; }
+        .hidden { display: none; }
+        .highlight { background-color: yellow; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Needs vs. Wants</h1>
+        <p>We use money to buy things, but we can’t buy everything we want. Some things are essential for living, while others make life more enjoyable. It’s important to make smart choices about how we spend money.</p>
+        <p>In this activity, you have <strong>$20</strong> to spend. Choose wisely and see how your choices affect your balance.</p>
+        <h3>Balance: $<span id="balance">20</span></h3>
+        <div id="items"></div>
+        <p id="result"></p>
+        <button id="nextQuiz" class="hidden" onclick="nextQuiz()"><a href="2.4.html">Next Quiz</a></button>
+    </div>
+    <script>
+        let balance = 20;
+        let purchases = 0;
+        let needsPurchased = 0;
+        const totalItems = 6;
+        const items = [
+            { name: "Water", price: 5, type: "Need" },
+            { name: "Apple", price: 3, type: "Need" },
+            { name: "House", price: 10, type: "Need" },
+            { name: "Video Game", price: 7, type: "Want" },
+            { name: "Ice Cream", price: 4, type: "Want" },
+            { name: "Toy", price: 6, type: "Want" }
+        ];
+        
+        const itemsContainer = document.getElementById("items");
+        const balanceDisplay = document.getElementById("balance");
+        const resultDisplay = document.getElementById("result");
+        const nextQuizButton = document.getElementById("nextQuiz");
+
+        // Apply random discounts
+        items.forEach((item) => {
+            if (Math.random() < 0.3) { // 30% chance to get a discount
+                item.discount = Math.floor(item.price * 0.2); // 20% discount
+                item.price -= item.discount;
+            }
+        });
+
+        items.forEach((item, index) => {
+            let itemDiv = document.createElement("div");
+            itemDiv.className = "item";
+            itemDiv.innerHTML = `<span>${item.name} - $${item.price} ${item.discount ? "<span class='highlight'>(Discount!)</span>" : ""}</span>`;
+            
+            let buyButton = document.createElement("button");
+            buyButton.innerText = item.type === "Need" ? "Buy (Need)" : "Buy (Want)";
+            buyButton.className = item.type === "Need" ? "need-btn" : "want-btn";
+            buyButton.onclick = function () {
+                if (balance >= item.price) {
+                    balance -= item.price;
+                    balanceDisplay.innerText = balance;
+                    resultDisplay.innerText = `You bought ${item.name}.`;
+                    buyButton.disabled = true;
+                    purchases++;
+                    
+                    if (item.type === "Need") needsPurchased++;
+
+                    if (balance === 0 || purchases === totalItems) {
+                        if (needsPurchased === 3) { // If all purchases are needs
+                            balance += 5;
+                            balanceDisplay.innerText = balance;
+                            resultDisplay.innerText = "🎉 You made wise choices! Bonus $5 added!";
+                        }
+                        setTimeout(() => {
+                            resultDisplay.innerText = "🎉 Congratulations! You completed the activity!";
+                            nextQuizButton.classList.remove("hidden");
+                        }, 1000);
+                    }
+                } else {
+                    resultDisplay.innerText = "Not enough money! Choose wisely.";
+                }
+            };
+            
+            itemDiv.appendChild(buyButton);
+            itemsContainer.appendChild(itemDiv);
+        });
+
+        function nextQuiz() {
+            alert("Next quiz coming soon!");
+            // Redirect if needed
+            // window.location.href = "next_quiz.html"; 
+        }
+    </script>
+</body>
+</html>

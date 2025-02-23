@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Sorting Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .game-container {
+            width: 70%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .big-div {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 2px solid black;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .drag-item {
+            width: 80px;
+            height: 80px;
+            cursor: grab;
+            transition: transform 0.2s ease;
+        }
+        .drag-item:hover {
+            transform: scale(1.1);
+        }
+        .drop-container {
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px solid black;
+            padding-top: 20px;
+        }
+        .drop-box {
+            width: 45%;
+            height: 200px;
+            border: 2px dashed gray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            background-color: #fff;
+        }
+        .drop-box h3 {
+            width: 100%;
+        }
+        .message {
+            display: none;
+            font-size: 20px;
+            color: green;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .next-quiz {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body> 
+    <div class="game-container">
+        <h2>Sort the Coins and Notes!</h2>
+        
+        <div class="big-div" id="items">
+            <img src="2coin.png" alt="Coin" class="drag-item" draggable="true" ondragstart="drag(event)" id="coin1">
+            <img src="10note.png" alt="Note" class="drag-item" draggable="true" ondragstart="drag(event)" id="note1"> 
+            <img src="10coin.png" alt="Coin" class="drag-item" draggable="true" ondragstart="drag(event)" id="coin3">
+            <img src="200note.png" alt="Note" class="drag-item" draggable="true" ondragstart="drag(event)" id="note2">
+            <img src="5coin.png" alt="Coin" class="drag-item" draggable="true" ondragstart="drag(event)" id="coin2">
+            <img src="500note.png" alt="Note" class="drag-item" draggable="true" ondragstart="drag(event)" id="note3">
+        </div>
+        <div class="drop-container">
+            <div class="drop-box" id="coins" ondrop="drop(event, 'coin')" ondragover="allowDrop(event)">
+                <h3>Coins</h3>
+            </div>
+            <div class="drop-box" id="notes" ondrop="drop(event, 'note')" ondragover="allowDrop(event)">
+                <h3>Notes</h3>
+            </div>
+        </div>
+        <button class="next-quiz" id="nextQuiz"><a href="1.2.html">Next Quiz</a></button>
+        <div class="message" id="message">Congratulations! You sorted all items correctly! 🎉</div>
+    </div>
+
+    <script>
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event, type) {
+            event.preventDefault();
+            let data = event.dataTransfer.getData("text");
+            let draggedElement = document.getElementById(data);
+            let dropBox = event.target.closest(".drop-box");
+
+            if ((type === 'coin' && draggedElement.alt === 'Coin') || (type === 'note' && draggedElement.alt === 'Note')) {
+                dropBox.appendChild(draggedElement);
+                checkCompletion();
+            } else {
+                alert("Place the correct item in the correct box!");
+            }
+        }
+
+        function checkCompletion() {
+            let coins = document.getElementById("coins").querySelectorAll(".drag-item").length;
+            let notes = document.getElementById("notes").querySelectorAll(".drag-item").length;
+            let totalItems = document.getElementById("items").querySelectorAll(".drag-item").length;
+            
+            if (coins + notes === 6 && totalItems === 0) {
+                document.getElementById("message").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("nextQuiz").style.display = "block";
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

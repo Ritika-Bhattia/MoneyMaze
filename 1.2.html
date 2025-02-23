@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Buy Candy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .sortable {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .step {
+            padding: 15px;
+            width: 80%;
+            background-color: lightblue;
+            cursor: grab;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .message {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .correct {
+            color: yellow;
+        }
+        .incorrect {
+            color: red;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        #nextQuiz {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #nextQuiz:hover {
+            background-color: darkgreen;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>How to Buy Candy</h1>
+        <p>Drag and drop the steps in the correct order:</p>
+        <div class="sortable" id="sortable">
+            <div class="step">Without money, we can’t buy the things we need.</div>
+            <div class="step">Imagine you go to a shop and want candy.</div>
+            <div class="step">That coin is money!</div>
+            <div class="step">You give the shopkeeper a coin, and they give you candy.</div>
+        </div>
+        <div class="button-container">
+            <button onclick="checkOrder()">Check Order</button>
+        </div>
+        <p class="message" id="message"></p>
+        <button id="nextQuiz" onclick="nextQuiz()"><a href="1.3.html">Next Quiz</a></button>
+    </div>
+
+    <script>
+        $(function() {
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+        });
+
+        function checkOrder() {
+            let steps = document.querySelectorAll(".step");
+            let userOrder = Array.from(steps).map(div => div.textContent);
+            let correctOrder = [
+                "Imagine you go to a shop and want candy.",
+                "You give the shopkeeper a coin, and they give you candy.",
+                "That coin is money!",
+                "Without money, we can’t buy the things we need."
+            ];
+            
+            let message = document.getElementById("message");
+            let nextQuizBtn = document.getElementById("nextQuiz");
+
+            if (JSON.stringify(userOrder) === JSON.stringify(correctOrder)) {
+                message.textContent = "Money is something we use to buy things like food, clothes, and toys.";
+                message.className = "message correct";
+                setTimeout(() => {
+                    nextQuizBtn.style.display = "block";
+                }, 3000);
+            } else {
+                message.textContent = "Try again.";
+                message.className = "message incorrect";
+                nextQuizBtn.style.display = "none";
+            }
+        }
+
+        function nextQuiz() {
+            alert("Next quiz coming soon!");
+            // Redirect or load next quiz here
+        }
+    </script>
+</body>
+</html>

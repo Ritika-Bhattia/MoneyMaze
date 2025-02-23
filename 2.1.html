@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs and Earnings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .draggable {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            background-color: #ffcc80;
+            border-radius: 5px;
+            cursor: grab;
+        }
+        .dropzone {
+            display: inline-block;
+            width: 200px;
+            height: 50px;
+            border: 2px dashed #333;
+            margin: 10px;
+            vertical-align: middle;
+            line-height: 50px;
+        }
+        #nextQuiz {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Jobs and Earnings</h1>
+        <p>🔹 People earn money by working in different jobs. Some jobs pay more than others.</p>
+        <p><b>Example:</b> Doctors earn more than bakers because their job requires more training.</p>
+        <h2>Activity: Match the Job to Its Earnings</h2>
+        <p>Drag the salary amount to the correct job!</p>
+        <div>
+            <div class="draggable" draggable="true" id="high">💰💰💰 (High Salary)</div>
+            <div class="draggable" draggable="true" id="medium">💰💰 (Medium Salary)</div>
+            <div class="draggable" draggable="true" id="low">💰 (Low Salary)</div>
+            <div class="draggable" draggable="true" id="variable">🌾 Variable Income</div>
+        </div>
+        <div>
+            <div class="dropzone" data-correct="high" id="doctor">👨‍⚕️ Doctor</div>
+            <div class="dropzone" data-correct="medium" id="teacher">👩‍🏫 Teacher</div>
+            <div class="dropzone" data-correct="low" id="cashier">🛒 Cashier</div>
+            <div class="dropzone" data-correct="variable" id="farmer">🚜 Farmer</div>
+        </div>
+        <p id="result"></p>
+        <button id="nextQuiz" onclick="nextQuiz()"><a href="2.2.html"> Next Quiz</a> </button>
+    </div>
+    <script>
+        const draggables = document.querySelectorAll('.draggable');
+        const dropzones = document.querySelectorAll('.dropzone');
+        const result = document.getElementById("result");
+        const nextQuizButton = document.getElementById("nextQuiz");
+        let correctMatches = 0;
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text', e.target.id);
+            });
+        });
+
+        dropzones.forEach(dropzone => {
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                let itemId = e.dataTransfer.getData('text');
+                let item = document.getElementById(itemId);
+                
+                if (dropzone.getAttribute('data-correct') === itemId) {
+                    dropzone.textContent = item.textContent;
+                    item.style.display = 'none';
+                    correctMatches++;
+                    
+                    if (correctMatches === 4) {
+                        result.textContent = "🎉 Congratulations! You've completed this quiz!";
+                        nextQuizButton.style.display = "block";
+                    }
+                } else {
+                    result.textContent = "Oops! Try again.";
+                }
+            });
+        });
+
+        function nextQuiz() {
+            alert("Moving to the next quiz...");
+            // Replace with actual next quiz redirection or logic
+        }
+    </script>
+</body>
+</html>

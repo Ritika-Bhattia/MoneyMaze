@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Factory Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .game-container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .step {
+            display: none;
+            padding: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 10px;
+            width: 80%;
+            transition: all 0.5s ease-in-out;
+        }
+        .step img {
+            width: 150px;
+            height: auto;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .step-buttons {
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        .message {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+            color: #007bff;
+            display: none;
+        }
+        #nextQuiz {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        #nextQuiz:hover {
+            background-color: #e68900;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h2>How Money is Made - Interactive Factory</h2>
+        <p>Click through the steps to learn how money is made!</p>
+        
+        <div class="step-container">
+            <div class="step" id="step1">
+                <h3>Step 1: Collecting Raw Materials</h3>
+                <img src="raw-materials.png" alt="Raw Materials">
+                <p>To create money, we need raw materials. Coins are made from metals like copper, nickel, and zinc, while banknotes are printed on a special blend of cotton and linen.</p>
+                <div class="step-buttons">
+                    <button onclick="nextStep()">Next</button>
+                </div>
+            </div>
+            <div class="step" id="step2">
+                <h3>Step 2: Minting Coins</h3>
+                <img src="minting-coins.png" alt="Minting Coins">
+                <p>Once the raw metal is prepared, it is melted and rolled into thin sheets. These sheets are then cut into small circular blanks, which are later stamped with designs.</p>
+                <div class="step-buttons">
+                    <button onclick="prevStep()">Back</button>
+                    <button onclick="nextStep()">Next</button>
+                </div>
+            </div>
+            <div class="step" id="step3">
+                <h3>Step 3: Printing Notes</h3>
+                <img src="printing-notes.png" alt="Printing Notes">
+                <p>Banknotes are created using high-security printing presses. They include security features like watermarks and holograms.</p>
+                <div class="step-buttons">
+                    <button onclick="prevStep()">Back</button>
+                    <button onclick="nextStep()">Next</button>
+                </div>
+            </div>
+            <div class="step" id="step4">
+                <h3>Step 4: Quality Check</h3>
+                <img src="quality-check.png" alt="Quality Check">
+                <p>Every coin and banknote undergoes strict quality control checks to prevent defects or errors.</p>
+                <div class="step-buttons">
+                    <button onclick="prevStep()">Back</button>
+                    <button onclick="nextStep()">Next</button>
+                </div>
+            </div>
+            <div class="step" id="step5">
+                <h3>Step 5: Distribution</h3>
+                <img src="distribution.png" alt="Distribution">
+                <p>After quality checks, money is sent to banks and ATMs for public use.</p>
+                <div class="step-buttons">
+                    <button onclick="prevStep()">Back</button>
+                    <button onclick="completeQuiz()">Finish</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="message" id="congratsMessage">🎉 Congratulations! You've completed this level! 🎉</p>
+        <button id="nextQuiz" onclick="nextQuiz()"><a href="1.4.html"> Next Quiz</a> </button>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const steps = document.querySelectorAll('.step');
+        const congratsMessage = document.getElementById("congratsMessage");
+        const nextQuizButton = document.getElementById("nextQuiz");
+
+        function showStep(stepIndex) {
+            steps.forEach((step, index) => {
+                step.style.display = index === stepIndex ? "block" : "none";
+            });
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function completeQuiz() {
+            showStep(-1); // Hide all steps
+            congratsMessage.style.display = "block";
+            setTimeout(() => {
+                nextQuizButton.style.display = "block";
+            }, 3000);
+        }
+
+        function nextQuiz() {
+            alert("Starting the next quiz...");
+            // Replace with actual redirection or next quiz content
+        }
+
+        showStep(currentStep);
+    </script>
+</body>
+</html>

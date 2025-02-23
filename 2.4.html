@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bartering System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .draggable {
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            background-color: #ffcc80;
+            border-radius: 5px;
+            cursor: grab;
+        }
+        .dropzone {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border: 2px dashed #333;
+            margin: 10px;
+            vertical-align: middle;
+            line-height: 100px;
+            background-color: #fff;
+        }
+        .dropzone.filled {
+            border: 2px solid #4CAF50;
+            background-color: #c8e6c9;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Bartering System</h1>
+        <p>💡 Before money existed, people traded things to get what they needed.</p>
+        <p><b>Example Story:</b> Lily has apples, and Sam has oranges. They trade with each other!</p>
+        <h2>Activity: Drag and Drop Barter Game</h2>
+        <p>Drag the items to the correct trade spot!</p>
+        <div>
+            <div class="draggable" draggable="true" id="cow">🐄 Cow</div>
+            <div class="draggable" draggable="true" id="wheat">🌾 Wheat</div>
+            <div class="draggable" draggable="true" id="fish">🐟 Fish</div>
+            <div class="draggable" draggable="true" id="corn">🌽 Corn</div>
+        </div>
+        <div>
+            <div class="dropzone" id="trade1">Drop here</div>
+            <div class="dropzone" id="trade2">Drop here</div>
+        </div>
+        <p id="result"></p>
+        <button id="nextLevel" class="hidden" onclick="nextLevel()">Next Level 2</button>
+    </div>
+    <script>
+        let completedTrades = 0;
+        const draggables = document.querySelectorAll('.draggable');
+        const dropzones = document.querySelectorAll('.dropzone');
+        const result = document.getElementById("result");
+        const nextLevelButton = document.getElementById("nextLevel");
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text', e.target.id);
+            });
+        });
+
+        dropzones.forEach(dropzone => {
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                let itemId = e.dataTransfer.getData('text');
+                let item = document.getElementById(itemId);
+                if (!dropzone.classList.contains("filled")) {
+                    dropzone.textContent = item.textContent;
+                    dropzone.classList.add("filled");
+                    item.style.display = 'none';
+                    completedTrades++;
+
+                    if (completedTrades === 2) {
+                        setTimeout(() => {
+                            result.textContent = "🎉 Congratulations! You completed the trade!";
+                            nextLevelButton.classList.remove("hidden");
+                        }, 1000);
+                    } else {
+                        result.textContent = "Great job! Keep going!";
+                    }
+                }
+            });
+        });
+
+        function nextLevel() {
+            alert("Next Level Coming Soon!");
+            // Redirect to Level 2 if needed
+            // window.location.href = "level2.html"; 
+        }
+    </script>
+</body>
+</html>
