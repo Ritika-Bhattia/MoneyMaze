@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Literacy Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #game-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 50%;
+        }
+        .btn-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            display: block;
+            width: 100%;
+        }
+        .btn-container button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        #next-button, #back-button, #next-quiz-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            transition: background 0.3s, transform 0.2s;
+        }
+        #next-button:hover, #back-button:hover, #next-quiz-button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        #next-button.show, #back-button.show, #next-quiz-button.show {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Financial Literacy Challenge</h1>
+        <div id="question-container">
+            <p id="question-text">Loading question...</p>
+            <div id="answer-buttons" class="btn-container"></div>
+        </div>
+        <button id="back-button" class="hide">Back</button>
+        <button id="next-button" class="hide">Next</button>
+        <p id="congrats-message" style="display: none; font-size: 18px; color: #28a745; font-weight: bold;">Congratulations! You've completed the quiz.</p>
+        <button id="next-quiz-button" class="hide"> <a href="game2.html">Next Quiz</a></button>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "What is a budget?", answers: [
+                { text: "A plan for spending money", correct: true },
+                { text: "A type of bank account", correct: false },
+                { text: "An investment strategy", correct: false },
+                { text: "A type of loan", correct: false }
+            ]},
+            { question: "What does 'saving' mean?", answers: [
+                { text: "Spending all your money", correct: false },
+                { text: "Keeping money for future use", correct: true },
+                { text: "Borrowing money", correct: false },
+                { text: "Investing in stocks", correct: false }
+            ]},
+            { question: "Which of the following is a good way to manage money?", answers: [
+        { text: "Spending everything you earn", correct: false },
+        { text: "Creating a budget and saving", correct: true },
+        { text: "Taking out loans for everything", correct: false },
+        { text: "Ignoring your expenses", correct: false }
+    ]},
+    { question: "What is a credit score?", answers: [
+        { text: "A score in a financial game", correct: false },
+        { text: "A number that represents your creditworthiness", correct: true },
+        { text: "The amount of money you have in your bank", correct: false },
+        { text: "A type of investment account", correct: false }
+    ]},
+    { question: "Why should you avoid debt?", answers: [
+        { text: "Because borrowing money is illegal", correct: false },
+        { text: "Because it can be expensive with interest", correct: true },
+        { text: "Because banks don't like it", correct: false },
+        { text: "Because it reduces your savings", correct: false }
+    ]},
+    { question: "What is the best way to grow your money over time?", answers: [
+        { text: "Hiding it under your mattress", correct: false },
+        { text: "Investing in assets like stocks and bonds", correct: true },
+        { text: "Spending it all on things you like", correct: false },
+        { text: "Only using cash for transactions", correct: false }
+    ]},
+        ];
+
+        const questionElement = document.getElementById("question-text");
+        const answerButtons = document.getElementById("answer-buttons");
+        const nextButton = document.getElementById("next-button");
+        const backButton = document.getElementById("back-button");
+        const congratsMessage = document.getElementById("congrats-message");
+        const nextQuizButton = document.getElementById("next-quiz-button");
+        
+        let currentQuestionIndex = 0;
+        
+        function startGame() {
+            currentQuestionIndex = 0;
+            nextButton.classList.add("hide");
+            backButton.classList.add("hide");
+            congratsMessage.style.display = "none";
+            nextQuizButton.classList.add("hide");
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            resetState();
+            let currentQuestion = questions[currentQuestionIndex];
+            questionElement.innerText = currentQuestion.question;
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement("button");
+                button.innerText = answer.text;
+                button.classList.add("btn");
+                if (answer.correct) {
+                    button.dataset.correct = answer.correct;
+                }
+                button.addEventListener("click", selectAnswer);
+                answerButtons.appendChild(button);
+            });
+            
+            backButton.classList.toggle("show", currentQuestionIndex > 0);
+            nextButton.classList.toggle("show", false);
+        }
+        
+        function resetState() {
+            nextButton.classList.add("hide");
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+        }
+        
+        function selectAnswer(e) {
+            const selectedButton = e.target;
+            const correct = selectedButton.dataset.correct;
+            if (correct) {
+                selectedButton.style.backgroundColor = "green";
+            } else {
+                selectedButton.style.backgroundColor = "red";
+            }
+            nextButton.classList.add("show");
+        }
+        
+        nextButton.addEventListener("click", () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                questionElement.innerText = "Great job! You've completed the quiz.";
+                nextButton.classList.add("hide");
+                backButton.classList.add("hide");
+                congratsMessage.style.display = "block";
+                nextQuizButton.classList.add("show");
+            }
+        });
+        
+        backButton.addEventListener("click", () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        });
+
+        nextQuizButton.addEventListener("click", () => {
+            alert("Next quiz coming soon!");
+        });
+        
+        startGame();
+    </script>
+</body>
+</html>
